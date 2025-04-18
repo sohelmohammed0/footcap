@@ -308,34 +308,41 @@ body {
 }
 
 /*-----------------------------------*\
-  #USER ACTION MODAL
+  #MODAL STYLING
 \*-----------------------------------*/
 
-.user-modal {
+.modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.7);
   background-color: var(--white);
-  padding: 20px;
   border-radius: var(--radius-8);
   box-shadow: var(--shadow-2);
   z-index: 5;
   opacity: 0;
   visibility: hidden;
   transition: var(--transition-1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 450px; /* Square-like modal size */
+  padding: 30px;
 }
 
-.user-modal.active {
+.modal.active {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%) scale(1);
 }
 
-.user-modal-content {
-  position: relative;
-  max-width: 400px;
+.modal-content {
   width: 100%;
+  max-height: 80vh; /* Prevent overflow */
+  overflow-y: auto;
+  padding: 20px;
+  position: relative;
 }
 
 .close-modal {
@@ -349,81 +356,29 @@ body {
 
 .close-modal:is(:hover, :focus) { color: var(--bittersweet); }
 
-.user-modal .h3 {
+.modal .h3 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.user-actions {
+/*-----------------------------------*\
+  #USER ACTION MODAL
+\*-----------------------------------*/
+
+.user-modal .user-actions {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.user-actions .btn {
+.user-modal .btn {
   width: 100%;
   text-align: center;
 }
 
 /*-----------------------------------*\
-  #LOGIN & SIGNUP MODAL
+  #FORM STYLING
 \*-----------------------------------*/
-
-.login-modal,
-.signup-modal,
-.change-password-modal,
-.profile-modal,
-.quick-view-modal,
-.cart-modal,
-.wishlist-modal,
-.compare-modal,
-.checkout-modal,
-.admin-panel-modal,
-.order-tracking-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.7);
-  background-color: var(--white);
-  padding: 20px;
-  border-radius: var(--radius-8);
-  box-shadow: var(--shadow-2);
-  z-index: 5;
-  opacity: 0;
-  visibility: hidden;
-  transition: var(--transition-1);
-}
-
-.login-modal.active,
-.signup-modal.active,
-.change-password-modal.active,
-.profile-modal.active,
-.quick-view-modal.active,
-.cart-modal.active,
-.wishlist-modal.active,
-.compare-modal.active,
-.checkout-modal.active,
-.admin-panel-modal.active,
-.order-tracking-modal.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.login-modal-content,
-.signup-modal-content,
-.change-password-modal-content,
-.profile-modal-content,
-.quick-view-modal-content,
-.cart-modal-content,
-.wishlist-modal-content,
-.compare-modal-content,
-.checkout-modal-content,
-.admin-panel-modal-content,
-.order-tracking-modal-content {
-  max-width: 400px;
-  width: 100%;
-}
 
 .form-group {
   margin-bottom: 15px;
@@ -664,38 +619,48 @@ body {
   margin-bottom: 10px;
 }
 
-#tracking-status {
+#tracking-status,
+#footer-tracking-status {
   padding: 10px;
   background: var(--cultured);
   border-radius: var(--radius-5);
 }
 
 /*-----------------------------------*\
-  #ORDER HISTORY
+  #ORDER TRACKING SECTION
 \*-----------------------------------*/
 
-.order-item {
-  padding: 15px;
-  background: var(--cultured);
-  border-radius: var(--radius-8);
-  margin-bottom: 10px;
-  box-shadow: var(--shadow-1);
-  transition: var(--transition-1);
+.order-tracking {
+  background-color: var(--white);
+  text-align: center;
 }
 
-.order-item:hover {
-  box-shadow: var(--shadow-2);
+.order-tracking .section-title {
+  margin-bottom: 30px;
 }
 
-.order-item h4 {
-  font-size: var(--fs-6);
-  margin-bottom: 10px;
+.tracking-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
-.order-item p {
-  font-family: var(--ff-roboto);
-  color: var(--onyx);
-  margin-bottom: 5px;
+.tracking-form .form-group {
+  width: 100%;
+}
+
+.tracking-form input {
+  padding: 10px;
+  border: 1px solid var(--gainsboro);
+  border-radius: var(--radius-5);
+}
+
+.tracking-form button {
+  width: 100%;
+  max-width: 200px;
 }
 
 /*-----------------------------------*\
@@ -1256,6 +1221,10 @@ body {
   .footer-link-box {
     grid-template-columns: 1fr 1fr;
   }
+
+  .modal {
+    max-width: 500px; /* Slightly larger for larger screens */
+  }
 }
 
 @media (min-width: 768px) {
@@ -1324,6 +1293,10 @@ body {
   .special .container { grid-template-columns: 1fr 1fr; }
 
   .footer-link-box { grid-template-columns: repeat(4, 1fr); }
+
+  .modal {
+    max-width: 550px; /* Larger modal for larger screens */
+  }
 }
 
 @media (min-width: 1200px) {

@@ -54,6 +54,7 @@ const changePasswordForm = document.querySelector("#change-password-form");
 const profileForm = document.querySelector("#profile-form");
 const checkoutForm = document.querySelector("#checkout-form");
 const trackingForm = document.querySelector("#tracking-form");
+const footerTrackingForm = document.querySelector("#footer-tracking-form");
 
 // Other elements
 const cartBadge = document.querySelector("#cart-badge");
@@ -260,27 +261,6 @@ function renderCheckoutCart() {
   }).join("") + `<p><strong>Total: $${cart.reduce((sum, item) => sum + products[item.id].price, 0).toFixed(2)}</strong></p>`;
 }
 
-function renderOrderHistory() {
-  const loggedInUser = localStorage.getItem("loggedInUser");
-  const orders = JSON.parse(localStorage.getItem("orders")) || [];
-  const userOrders = orders.filter(order => order.user === loggedInUser);
-  const orderHistory = document.querySelector("#order-history");
-  if (userOrders.length === 0) {
-    orderHistory.innerHTML = "<p>No orders found.</p>";
-    return;
-  }
-  orderHistory.innerHTML = userOrders.map(order => {
-    return `
-      <div class="order-item">
-        <h4>Order ID: ${order.id}</h4>
-        <p>Total: $${order.total.toFixed(2)}</p>
-        <p>Status: ${order.status}</p>
-        <p>Date: ${new Date(order.timestamp).toLocaleString()}</p>
-      </div>
-    `;
-  }).join("");
-}
-
 function renderAdminPanel(tab = "inventory") {
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
   const productsSold = orders.reduce((acc, order) => {
@@ -371,6 +351,23 @@ function simulateOrderTracking(orderId) {
   }
 }
 
+function handleOrderTracking(e, statusElement) {
+  e.preventDefault();
+  const orderId = e.target.querySelector("[name='order-id']").value;
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const order = orders.find(o => o.id === orderId);
+  if (order) {
+    statusElement.innerHTML = `
+      <p><strong>Order ID:</strong> ${order.id}</p>
+      <p><strong>Status:</strong> ${order.status}</p>
+      <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
+      <p><strong>Date:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
+    `;
+  } else {
+    statusElement.innerHTML = "<p>Order not found!</p>";
+  }
+}
+
 // Event listeners
 userBtn.addEventListener("click", () => {
   closeAllModals();
@@ -418,7 +415,6 @@ openProfile.addEventListener("click", () => {
   document.querySelector("#email").value = localStorage.getItem("loggedInUser") || "";
   document.querySelector("#phone").value = user.phone || "";
   document.querySelector("#address").value = user.address || "";
-  renderOrderHistory();
   profileModal.classList.add("active");
   overlay.classList.add("active");
 });
@@ -546,21 +542,11 @@ checkoutForm.addEventListener("submit", (e) => {
 });
 
 trackingForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const orderId = document.querySelector("#order-id").value;
-  const orders = JSON.parse(localStorage.getItem("orders")) || [];
-  const order = orders.find(o => o.id === orderId);
-  const trackingStatus = document.querySelector("#tracking-status");
-  if (order) {
-    trackingStatus.innerHTML = `
-      <p><strong>Order ID:</strong> ${order.id}</p>
-      <p><strong>Status:</strong> ${order.status}</p>
-      <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
-      <p><strong>Date:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
-    `;
-  } else {
-    trackingStatus.innerHTML = "<p>Order not found!</p>";
-  }
+  handleOrderTracking(e, document.querySelector("#tracking-status"));
+});
+
+footerTrackingForm.addEventListener("submit", (e) => {
+  handleOrderTracking(e, document.querySelector("#footer-tracking-status"));
 });
 
 document.querySelectorAll(".filter-btn").forEach(btn => {
@@ -669,4 +655,3 @@ updateUserActions();
 renderCart();
 renderWishlist();
 renderCompare();
-renderOrderHistory();
