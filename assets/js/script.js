@@ -1,508 +1,169 @@
-'use strict';
+const products = {
+  "1": { title: "Running Sneaker Shoes", category: ["Men", "Women"], brand: "Nike", price: 180.85, image: "./assets/images/product-1.jpg", stock: 50 },
+  "2": { title: "Leather Mens Slipper", category: ["Men", "Sports"], brand: "Adidas", price: 190.85, image: "./assets/images/product-2.jpg", stock: 30 },
+  "3": { title: "Simple Fabric Shoe", category: ["Men", "Women"], brand: "Puma", price: 160.85, image: "./assets/images/product-3.jpg", stock: 40 },
+  "4": { title: "Air Jordan 7 Retro", category: ["Men", "Sports"], brand: "Nike", price: 170.85, image: "./assets/images/product-4.jpg", stock: 20 },
+  "5": { title: "Nike Air Max 270 SE", category: ["Men", "Women"], brand: "Nike", price: 120.85, image: "./assets/images/product-5.jpg", stock: 60 },
+  "6": { title: "Adidas Sneakers Shoes", category: ["Men", "Women"], brand: "Adidas", price: 100.85, image: "./assets/images/product-6.jpg", stock: 45 },
+  "7": { title: "Nike Basketball Shoes", category: ["Men", "Sports"], brand: "Nike", price: 120.85, image: "./assets/images/product-7.jpg", stock: 35 },
+  "8": { title: "Simple Fabric Shoe", category: ["Men", "Women"], brand: "Puma", price: 100.85, image: "./assets/images/product-8.jpg", stock: 25 }
+};
 
-/**
- * Navbar toggle
- */
-const overlay = document.querySelector("[data-overlay]");
-const navOpenBtn = document.querySelector("[data-nav-open-btn]");
-const navbar = document.querySelector("[data-navbar]");
-const navCloseBtn = document.querySelector("[data-nav-close-btn]");
-
-const navElems = [overlay, navOpenBtn, navCloseBtn];
-
-for (let i = 0; i < navElems.length; i++) {
-  navElems[i].addEventListener("click", function () {
-    navbar.classList.toggle("active");
-    overlay.classList.toggle("active");
-  });
-}
-
-/**
- * Header & go top btn active on page scroll
- */
-const header = document.querySelector("[data-header]");
-const goTopBtn = document.querySelector("[data-go-top]");
-
-window.addEventListener("scroll", function () {
-  if (window.scrollY >= 80) {
-    header.classList.add("active");
-    goTopBtn.classList.add("active");
-  } else {
-    header.classList.remove("active");
-    goTopBtn.classList.remove("active");
-  }
-});
-
-/**
- * User modals
- */
-const userBtn = document.querySelector("#user-btn");
+// Modal elements
 const userModal = document.querySelector("#user-modal");
-const closeUserModal = document.querySelector("#close-user-modal");
 const loginModal = document.querySelector("#login-modal");
-const closeLoginModal = document.querySelector("#close-login-modal");
 const signupModal = document.querySelector("#signup-modal");
-const closeSignupModal = document.querySelector("#close-signup-modal");
 const changePasswordModal = document.querySelector("#change-password-modal");
-const closeChangePasswordModal = document.querySelector("#close-change-password-modal");
 const profileModal = document.querySelector("#profile-modal");
-const closeProfileModal = document.querySelector("#close-profile-modal");
+const quickViewModal = document.querySelector("#quick-view-modal");
+const cartModal = document.querySelector("#cart-modal");
+const wishlistModal = document.querySelector("#wishlist-modal");
+const compareModal = document.querySelector("#compare-modal");
+const checkoutModal = document.querySelector("#checkout-modal");
+const adminPanelModal = document.querySelector("#admin-panel-modal");
+const orderTrackingModal = document.querySelector("#order-tracking-modal");
+const overlay = document.querySelector(".overlay");
 
-const loginForm = document.querySelector("#login-form");
-const signupForm = document.querySelector("#signup-form");
-const changePasswordForm = document.querySelector("#change-password-form");
-const profileForm = document.querySelector("#profile-form");
-
+// Button elements
+const userBtn = document.querySelector("#user-btn");
+const cartBtn = document.querySelector("#cart-btn");
+const wishlistBtn = document.querySelector("#wishlist-btn");
 const openLogin = document.querySelector("#open-login");
 const openSignup = document.querySelector("#open-signup");
 const openChangePassword = document.querySelector("#open-change-password");
 const openProfile = document.querySelector("#open-profile");
+const openAdminPanel = document.querySelector("#open-admin-panel");
 const logoutBtn = document.querySelector("#logout");
-
-// New modal elements
-const quickViewModal = document.querySelector("#quick-view-modal");
+const closeUserModal = document.querySelector("#close-user-modal");
+const closeLoginModal = document.querySelector("#close-login-modal");
+const closeSignupModal = document.querySelector("#close-signup-modal");
+const closeChangePasswordModal = document.querySelector("#close-change-password-modal");
+const closeProfileModal = document.querySelector("#close-profile-modal");
 const closeQuickViewModal = document.querySelector("#close-quick-view-modal");
-const cartModal = document.querySelector("#cart-modal");
 const closeCartModal = document.querySelector("#close-cart-modal");
-const wishlistModal = document.querySelector("#wishlist-modal");
 const closeWishlistModal = document.querySelector("#close-wishlist-modal");
-const compareModal = document.querySelector("#compare-modal");
 const closeCompareModal = document.querySelector("#close-compare-modal");
-const clearCompareBtn = document.querySelector("#clear-compare");
+const closeCheckoutModal = document.querySelector("#close-checkout-modal");
+const closeAdminPanelModal = document.querySelector("#close-admin-panel-modal");
+const closeOrderTrackingModal = document.querySelector("#close-order-tracking-modal");
 
-const wishlistBtn = document.querySelector("#wishlist-btn");
-const cartBtn = document.querySelector("#cart-btn");
-const wishlistBadge = document.querySelector("#wishlist-badge");
+// Form elements
+const loginForm = document.querySelector("#login-form");
+const signupForm = document.querySelector("#signup-form");
+const changePasswordForm = document.querySelector("#change-password-form");
+const profileForm = document.querySelector("#profile-form");
+const checkoutForm = document.querySelector("#checkout-form");
+const trackingForm = document.querySelector("#tracking-form");
+
+// Other elements
 const cartBadge = document.querySelector("#cart-badge");
+const wishlistBadge = document.querySelector("#wishlist-badge");
+const quickViewAddToCart = document.querySelector("#quick-view-add-to-cart");
+const checkoutBtn = document.querySelector("#checkout-btn");
+const clearCompare = document.querySelector("#clear-compare");
 
-// Helper function to close all modals
 function closeAllModals() {
-  userModal.classList.remove("active");
-  loginModal.classList.remove("active");
-  signupModal.classList.remove("active");
-  changePasswordModal.classList.remove("active");
-  profileModal.classList.remove("active");
-  quickViewModal.classList.remove("active");
-  cartModal.classList.remove("active");
-  wishlistModal.classList.remove("active");
-  compareModal.classList.remove("active");
+  [userModal, loginModal, signupModal, changePasswordModal, profileModal, quickViewModal, cartModal, wishlistModal, compareModal, checkoutModal, adminPanelModal, orderTrackingModal].forEach(modal => modal.classList.remove("active"));
   overlay.classList.remove("active");
 }
 
-// Update user action buttons based on login state
-function updateUserActions() {
-  const isLoggedIn = localStorage.getItem("loggedInUser");
-  if (isLoggedIn) {
-    openLogin.style.display = "none";
-    openSignup.style.display = "none";
-    openChangePassword.style.display = "block";
-    openProfile.style.display = "block";
-    logoutBtn.style.display = "block";
-    userBtn.querySelector("ion-icon").setAttribute("name", "person-circle-outline");
-  } else {
-    openLogin.style.display = "block";
-    openSignup.style.display = "block";
-    openChangePassword.style.display = "none";
-    openProfile.style.display = "none";
-    logoutBtn.style.display = "none";
-    userBtn.querySelector("ion-icon").setAttribute("name", "person-outline");
-  }
-}
-
-// Load profile data
-function loadProfile() {
-  const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
-  document.querySelector("#name").value = profile.name || "";
-  document.querySelector("#email").value = profile.email || "";
-  document.querySelector("#phone").value = profile.phone || "";
-  document.querySelector("#address").value = profile.address || "";
-}
-
-// Show user modal
-userBtn.addEventListener("click", function () {
-  updateUserActions();
-  userModal.classList.add("active");
-  overlay.classList.add("active");
-});
-
-// Close user modal
-closeUserModal.addEventListener("click", closeAllModals);
-
-// Open login modal
-openLogin.addEventListener("click", function () {
-  closeAllModals();
-  loginModal.classList.add("active");
-  overlay.classList.add("active");
-});
-
-// Close login modal
-closeLoginModal.addEventListener("click", closeAllModals);
-
-// Open signup modal
-openSignup.addEventListener("click", function () {
-  closeAllModals();
-  signupModal.classList.add("active");
-  overlay.classList.add("active");
-});
-
-// Close signup modal
-closeSignupModal.addEventListener("click", closeAllModals);
-
-// Open change password modal
-openChangePassword.addEventListener("click", function () {
-  closeAllModals();
-  changePasswordModal.classList.add("active");
-  overlay.classList.add("active");
-});
-
-// Close change password modal
-closeChangePasswordModal.addEventListener("click", closeAllModals);
-
-// Open profile modal
-openProfile.addEventListener("click", function () {
-  closeAllModals();
-  loadProfile();
-  profileModal.classList.add("active");
-  overlay.classList.add("active");
-});
-
-// Close profile modal
-closeProfileModal.addEventListener("click", closeAllModals);
-
-// Open cart modal
-cartBtn.addEventListener("click", function () {
-  closeAllModals();
-  renderCart();
-  cartModal.classList.add("active");
-  overlay.classList.add("active");
-});
-
-// Close cart modal
-closeCartModal.addEventListener("click", closeAllModals);
-
-// Open wishlist modal
-wishlistBtn.addEventListener("click", function () {
-  closeAllModals();
-  renderWishlist();
-  wishlistModal.classList.add("active");
-  overlay.classList.add("active");
-});
-
-// Close wishlist modal
-closeWishlistModal.addEventListener("click", closeAllModals);
-
-// Open compare modal
-document.querySelectorAll("[data-action='add-to-compare']").forEach(btn => {
-  btn.addEventListener("click", function () {
-    const productId = btn.closest(".product-item").dataset.productId;
-    addToCompare(productId);
-  });
-});
-
-// Close compare modal
-closeCompareModal.addEventListener("click", closeAllModals);
-
-// Clear compare list
-clearCompareBtn.addEventListener("click", function () {
-  localStorage.removeItem("compare");
-  renderCompare();
-  showToast("Comparison cleared!");
-});
-
-// Close modals when clicking overlay
-overlay.addEventListener("click", function (e) {
-  if (e.target === overlay) {
-    closeAllModals();
-  }
-});
-
-// Handle signup
-signupForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const email = document.querySelector("#signup-email").value;
-  const password = document.querySelector("#signup-password").value;
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  
-  if (users.some(user => user.email === email)) {
-    showToast("Email already registered!", "error");
-    return;
-  }
-
-  users.push({ email, password });
-  localStorage.setItem("users", JSON.stringify(users));
-  showToast("Sign up successful! Please login.");
-  closeAllModals();
-  loginModal.classList.add("active");
-  overlay.classList.add("active");
-});
-
-// Handle login
-loginForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const email = document.querySelector("#login-email").value;
-  const password = document.querySelector("#login-password").value;
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-
-  const user = users.find(user => user.email === email && user.password === password);
-  if (user) {
-    localStorage.setItem("loggedInUser", email);
-    showToast("Login successful!");
-    closeAllModals();
-    updateUserActions();
-  } else {
-    showToast("Invalid email or password!", "error");
-  }
-});
-
-// Handle change password
-changePasswordForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const currentPassword = document.querySelector("#current-password").value;
-  const newPassword = document.querySelector("#new-password").value;
-  const loggedInUser = localStorage.getItem("loggedInUser");
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  const userIndex = users.findIndex(user => user.email === loggedInUser && user.password === currentPassword);
-  if (userIndex !== -1) {
-    users[userIndex].password = newPassword;
-    localStorage.setItem("users", JSON.stringify(users));
-    showToast("Password changed successfully!");
-    closeAllModals();
-  } else {
-    showToast("Current password is incorrect!", "error");
-  }
-});
-
-// Handle profile update
-profileForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const loggedInUser = localStorage.getItem("loggedInUser");
-  if (!loggedInUser) {
-    showToast("You must be logged in to edit your profile!", "error");
-    closeAllModals();
-    loginModal.classList.add("active");
-    overlay.classList.add("active");
-    return;
-  }
-
-  const profile = {
-    email: loggedInUser,
-    name: document.querySelector("#name").value,
-    phone: document.querySelector("#phone").value,
-    address: document.querySelector("#address").value,
-  };
-  localStorage.setItem("userProfile", JSON.stringify(profile));
-  showToast("Profile saved successfully!");
-  closeAllModals();
-});
-
-// Handle logout
-logoutBtn.addEventListener("click", function () {
-  localStorage.removeItem("loggedInUser");
-  showToast("Logged out successfully!");
-  closeAllModals();
-  updateUserActions();
-});
-
-// Initialize user actions on page load
-document.addEventListener("DOMContentLoaded", function () {
-  updateUserActions();
-  updateBadges();
-  initializeProductActions();
-});
-
-// Product data (simplified for demonstration)
-const products = {
-  "1": {
-    title: "Running Sneaker Shoes",
-    category: "Men / Women",
-    price: "$180.85",
-    image: "./assets/images/product-1.jpg"
-  },
-  "2": {
-    title: "Leather Mens Slipper",
-    category: "Men / Sports",
-    price: "$190.85",
-    image: "./assets/images/product-2.jpg"
-  },
-  "3": {
-    title: "Simple Fabric Shoe",
-    category: "Men / Women",
-    price: "$160.85",
-    image: "./assets/images/product-3.jpg"
-  },
-  "4": {
-    title: "Air Jordan 7 Retro",
-    category: "Men / Sports",
-    price: "$170.85",
-    image: "./assets/images/product-4.jpg"
-  },
-  "5": {
-    title: "Nike Air Max 270 SE",
-    category: "Men / Women",
-    price: "$120.85",
-    image: "./assets/images/product-5.jpg"
-  },
-  "6": {
-    title: "Adidas Sneakers Shoes",
-    category: "Men / Women",
-    price: "$100.85",
-    image: "./assets/images/product-6.jpg"
-  },
-  "7": {
-    title: "Nike Basketball shoes",
-    category: "Men / Sports",
-    price: "$120.85",
-    image: "./assets/images/product-7.jpg"
-  },
-  "8": {
-    title: "Simple Fabric Shoe",
-    category: "Men / Women",
-    price: "$100.85",
-    image: "./assets/images/product-8.jpg"
-  }
-};
-
-// Initialize product action buttons
-function initializeProductActions() {
-  document.querySelectorAll(".card-action-btn").forEach(btn => {
-    btn.addEventListener("click", function () {
-      const action = btn.dataset.action;
-      const productId = btn.closest(".product-item").dataset.productId;
-      switch (action) {
-        case "quick-view":
-          showQuickView(productId);
-          break;
-        case "add-to-cart":
-          addToCart(productId);
-          break;
-        case "add-to-wishlist":
-          addToWishlist(productId);
-          break;
-        case "add-to-compare":
-          addToCompare(productId);
-          break;
-      }
-    });
-  });
-}
-
-// Show toast notification
 function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.textContent = message;
   document.body.appendChild(toast);
+  setTimeout(() => toast.classList.add("show"), 100);
   setTimeout(() => {
-    toast.classList.add("show");
-    setTimeout(() => {
-      toast.classList.remove("show");
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
-  }, 100);
+    toast.classList.remove("show");
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
 }
 
-// Update badges
 function updateBadges() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-  
   cartBadge.textContent = cart.length;
   wishlistBadge.textContent = wishlist.length;
-  
   cartBadge.style.display = cart.length > 0 ? "grid" : "none";
   wishlistBadge.style.display = wishlist.length > 0 ? "grid" : "none";
 }
 
-// Show quick view
-function showQuickView(productId) {
-  const product = products[productId];
-  if (!product) return;
-  
-  document.querySelector("#quick-view-image").src = product.image;
-  document.querySelector("#quick-view-title").textContent = product.title;
-  document.querySelector("#quick-view-category").textContent = product.category;
-  document.querySelector("#quick-view-price").textContent = product.price;
-  
-  const addToCartBtn = document.querySelector("#quick-view-add-to-cart");
-  addToCartBtn.onclick = () => addToCart(productId);
-  
-  closeAllModals();
-  quickViewModal.classList.add("active");
-  overlay.classList.add("active");
-}
-
-// Add to cart
-function addToCart(productId) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  if (!cart.includes(productId)) {
-    cart.push(productId);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateBadges();
-    showToast("Added to cart!");
+function updateUserActions() {
+  const isLoggedIn = localStorage.getItem("loggedInUser");
+  const isAdmin = isLoggedIn === "admin@footcap.com";
+  if (isLoggedIn) {
+    openLogin.style.display = "none";
+    openSignup.style.display = "none";
+    openChangePassword.style.display = "block";
+    openProfile.style.display = "block";
+    openAdminPanel.style.display = isAdmin ? "block" : "none";
+    logoutBtn.style.display = "block";
   } else {
-    showToast("Item already in cart!", "error");
+    openLogin.style.display = "block";
+    openSignup.style.display = "block";
+    openChangePassword.style.display = "none";
+    openProfile.style.display = "none";
+    openAdminPanel.style.display = "none";
+    logoutBtn.style.display = "none";
   }
 }
 
-// Add to wishlist
-function addToWishlist(productId) {
-  let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-  if (!wishlist.includes(productId)) {
-    wishlist.push(productId);
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-    updateBadges();
-    showToast("Added to wishlist!");
-  } else {
-    showToast("Item already in wishlist!", "error");
-  }
-}
-
-// Render cart
 function renderCart() {
-  const cartContent = document.querySelector("#cart-content");
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  
+  const cartContent = document.querySelector("#cart-content");
   if (cart.length === 0) {
     cartContent.innerHTML = "<p>Your cart is empty.</p>";
+    checkoutBtn.style.display = "none";
     return;
   }
-  
-  cartContent.innerHTML = cart.map(productId => {
+  const cartItems = cart.reduce((acc, item) => {
+    acc[item.id] = (acc[item.id] || 0) + 1;
+    return acc;
+  }, {});
+  cartContent.innerHTML = Object.entries(cartItems).map(([productId, quantity]) => {
     const product = products[productId];
     return `
       <div class="cart-item">
         <img src="${product.image}" alt="${product.title}" class="cart-item-image">
         <div class="cart-item-details">
           <h4>${product.title}</h4>
-          <p>${product.price}</p>
+          <p>$${product.price.toFixed(2)} x <input type="number" value="${quantity}" min="1" onchange="updateCartQuantity('${productId}', this.value)"></p>
           <button class="btn btn-secondary" onclick="removeFromCart('${productId}')">Remove</button>
         </div>
       </div>
     `;
   }).join("");
+  checkoutBtn.style.display = "block";
 }
 
-// Remove from cart
-function removeFromCart(productId) {
+function updateCartQuantity(productId, quantity) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart = cart.filter(id => id !== productId);
+  cart = cart.filter(item => item.id !== productId);
+  for (let i = 0; i < parseInt(quantity); i++) {
+    cart.push({ id: productId });
+  }
   localStorage.setItem("cart", JSON.stringify(cart));
   updateBadges();
   renderCart();
-  showToast("Removed from cart!");
+  renderCheckoutCart();
 }
 
-// Render wishlist
+function removeFromCart(productId) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart = cart.filter(item => item.id !== productId);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateBadges();
+  renderCart();
+  showToast("Item removed from cart!");
+}
+
 function renderWishlist() {
-  const wishlistContent = document.querySelector("#wishlist-content");
   const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-  
+  const wishlistContent = document.querySelector("#wishlist-content");
   if (wishlist.length === 0) {
     wishlistContent.innerHTML = "<p>Your wishlist is empty.</p>";
     return;
   }
-  
   wishlistContent.innerHTML = wishlist.map(productId => {
     const product = products[productId];
     return `
@@ -510,7 +171,7 @@ function renderWishlist() {
         <img src="${product.image}" alt="${product.title}" class="wishlist-item-image">
         <div class="wishlist-item-details">
           <h4>${product.title}</h4>
-          <p>${product.price}</p>
+          <p>$${product.price.toFixed(2)}</p>
           <button class="btn btn-secondary" onclick="removeFromWishlist('${productId}')">Remove</button>
         </div>
       </div>
@@ -518,92 +179,494 @@ function renderWishlist() {
   }).join("");
 }
 
-// Remove from wishlist
 function removeFromWishlist(productId) {
   let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
   wishlist = wishlist.filter(id => id !== productId);
   localStorage.setItem("wishlist", JSON.stringify(wishlist));
   updateBadges();
   renderWishlist();
-  showToast("Removed from wishlist!");
+  showToast("Item removed from wishlist!");
 }
 
-// Add to compare
-function addToCompare(productId) {
-  let compare = JSON.parse(localStorage.getItem("compare")) || [];
-  if (compare.length >= 4) {
-    showToast("You can compare up to 4 products!", "error");
-    return;
-  }
-  if (!compare.includes(productId)) {
-    compare.push(productId);
-    localStorage.setItem("compare", JSON.stringify(compare));
-    showToast("Added to comparison!");
-    renderCompare();
-    closeAllModals();
-    compareModal.classList.add("active");
-    overlay.classList.add("active");
-  } else {
-    showToast("Item already in comparison!", "error");
-  }
-}
-
-// Render compare
 function renderCompare() {
-  const compareContent = document.querySelector("#compare-content");
   const compare = JSON.parse(localStorage.getItem("compare")) || [];
-  
+  const compareContent = document.querySelector("#compare-content");
   if (compare.length === 0) {
-    compareContent.innerHTML = "<p>No products selected for comparison.</p>";
+    compareContent.innerHTML = "<p>No products to compare.</p>";
     return;
   }
-  
   compareContent.innerHTML = `
     <table class="compare-table">
       <thead>
         <tr>
-          <th>Product</th>
-          ${compare.map(() => "<th></th>").join("")}
+          <th></th>
+          ${compare.map(productId => `<th>${products[productId].title}</th>`).join("")}
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>Image</td>
-          ${compare.map(productId => `
-            <td><img src="${products[productId].image}" alt="${products[productId].title}" class="compare-image"></td>
-          `).join("")}
-        </tr>
-        <tr>
-          <td>Title</td>
-          ${compare.map(productId => `<td>${products[productId].title}</td>`).join("")}
-        </tr>
-        <tr>
-          <td>Category</td>
-          ${compare.map(productId => `<td>${products[productId].category}</td>`).join("")}
+          ${compare.map(productId => `<td><img src="${products[productId].image}" alt="${products[productId].title}" class="compare-image"></td>`).join("")}
         </tr>
         <tr>
           <td>Price</td>
-          ${compare.map(productId => `<td>${products[productId].price}</td>`).join("")}
+          ${compare.map(productId => `<td>$${products[productId].price.toFixed(2)}</td>`).join("")}
+        </tr>
+        <tr>
+          <td>Category</td>
+          ${compare.map(productId => `<td>${products[productId].category.join(", ")}</td>`).join("")}
+        </tr>
+        <tr>
+          <td>Brand</td>
+          ${compare.map(productId => `<td>${products[productId].brand}</td>`).join("")}
         </tr>
         <tr>
           <td>Action</td>
-          ${compare.map(productId => `
-            <td><button class="btn btn-secondary" onclick="removeFromCompare('${productId}')">Remove</button></td>
-          `).join("")}
+          ${compare.map(productId => `<td><button class="btn btn-secondary" onclick="removeFromCompare('${productId}')">Remove</button></td>`).join("")}
         </tr>
       </tbody>
     </table>
   `;
 }
 
-// Remove from compare
 function removeFromCompare(productId) {
   let compare = JSON.parse(localStorage.getItem("compare")) || [];
   compare = compare.filter(id => id !== productId);
   localStorage.setItem("compare", JSON.stringify(compare));
   renderCompare();
-  showToast("Removed from comparison!");
+  showToast("Item removed from comparison!");
 }
 
-// Close quick view modal
-closeQuickViewModal.addEventListener("click", closeAllModals);
+function renderCheckoutCart() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const checkoutCart = document.querySelector("#checkout-cart");
+  if (cart.length === 0) {
+    checkoutCart.innerHTML = "<p>Your cart is empty.</p>";
+    return;
+  }
+  const cartItems = cart.reduce((acc, item) => {
+    acc[item.id] = (acc[item.id] || 0) + 1;
+    return acc;
+  }, {});
+  checkoutCart.innerHTML = Object.entries(cartItems).map(([productId, quantity]) => {
+    const product = products[productId];
+    return `
+      <div class="cart-item">
+        <h4>${product.title}</h4>
+        <p>Quantity: ${quantity}</p>
+        <p>Total: $${(product.price * quantity).toFixed(2)}</p>
+      </div>
+    `;
+  }).join("") + `<p><strong>Total: $${cart.reduce((sum, item) => sum + products[item.id].price, 0).toFixed(2)}</strong></p>`;
+}
+
+function renderOrderHistory() {
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const userOrders = orders.filter(order => order.user === loggedInUser);
+  const orderHistory = document.querySelector("#order-history");
+  if (userOrders.length === 0) {
+    orderHistory.innerHTML = "<p>No orders found.</p>";
+    return;
+  }
+  orderHistory.innerHTML = userOrders.map(order => {
+    return `
+      <div class="order-item">
+        <h4>Order ID: ${order.id}</h4>
+        <p>Total: $${order.total.toFixed(2)}</p>
+        <p>Status: ${order.status}</p>
+        <p>Date: ${new Date(order.timestamp).toLocaleString()}</p>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderAdminPanel(tab = "inventory") {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const productsSold = orders.reduce((acc, order) => {
+    order.items.forEach(item => {
+      acc[item.id] = (acc[item.id] || 0) + 1;
+    });
+    return acc;
+  }, {});
+  if (tab === "inventory") {
+    const inventory = Object.entries(products).reduce((acc, [id, product]) => {
+      product.category.forEach(cat => {
+        acc[cat] = (acc[cat] || { count: 0, stock: 0 });
+        acc[cat].count += 1;
+        acc[cat].stock += product.stock;
+      });
+      return acc;
+    }, {});
+    document.querySelector("#inventory-content").innerHTML = `
+      <table class="admin-table">
+        <thead><tr><th>Category</th><th>Products</th><th>Stock</th></tr></thead>
+        <tbody>
+          ${Object.entries(inventory).map(([cat, data]) => `
+            <tr><td>${cat}</td><td>${data.count}</td><td>${data.stock}</td></tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+  } else if (tab === "sales") {
+    document.querySelector("#sales-content").innerHTML = `
+      <p>Total Orders: ${orders.length}</p>
+      <p>Total Revenue: $${orders.reduce((sum, order) => sum + order.total, 0).toFixed(2)}</p>
+      <h4>Most Sold Products</h4>
+      <table class="admin-table">
+        <thead><tr><th>Product</th><th>Units Sold</th></tr></thead>
+        <tbody>
+          ${Object.entries(productsSold).sort((a, b) => b[1] - a[1]).map(([id, count]) => `
+            <tr><td>${products[id].title}</td><td>${count}</td></tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+  } else if (tab === "stock") {
+    document.querySelector("#stock-content").innerHTML = `
+      <table class="admin-table">
+        <thead><tr><th>Product</th><th>Stock</th><th>Update</th></tr></thead>
+        <tbody>
+          ${Object.entries(products).map(([id, product]) => `
+            <tr>
+              <td>${product.title}</td>
+              <td>${product.stock}</td>
+              <td>
+                <input type="number" id="stock-${id}" value="${product.stock}" min="0">
+                <button class="btn btn-secondary" onclick="updateStock('${id}')">Update</button>
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+  }
+}
+
+function updateStock(productId) {
+  const stock = parseInt(document.querySelector(`#stock-${productId}`).value);
+  if (stock >= 0) {
+    products[productId].stock = stock;
+    showToast("Stock updated!");
+    renderAdminPanel("stock");
+  } else {
+    showToast("Invalid stock value!", "error");
+  }
+}
+
+function simulateOrderTracking(orderId) {
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const order = orders.find(o => o.id === orderId);
+  if (!order) return;
+  const statuses = ["Order Placed", "Processing", "Shipped", "Delivered"];
+  let currentStatusIndex = statuses.indexOf(order.status);
+  if (currentStatusIndex < statuses.length - 1) {
+    setTimeout(() => {
+      order.status = statuses[currentStatusIndex + 1];
+      localStorage.setItem("orders", JSON.stringify(orders));
+      if (order.status !== "Delivered") {
+        simulateOrderTracking(orderId);
+      }
+    }, 5000); // Update every 5 seconds
+  }
+}
+
+// Event listeners
+userBtn.addEventListener("click", () => {
+  closeAllModals();
+  updateUserActions();
+  userModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+cartBtn.addEventListener("click", () => {
+  closeAllModals();
+  renderCart();
+  cartModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+wishlistBtn.addEventListener("click", () => {
+  closeAllModals();
+  renderWishlist();
+  wishlistModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+openLogin.addEventListener("click", () => {
+  closeAllModals();
+  loginModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+openSignup.addEventListener("click", () => {
+  closeAllModals();
+  signupModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+openChangePassword.addEventListener("click", () => {
+  closeAllModals();
+  changePasswordModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+openProfile.addEventListener("click", () => {
+  closeAllModals();
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  document.querySelector("#name").value = user.name || "";
+  document.querySelector("#email").value = localStorage.getItem("loggedInUser") || "";
+  document.querySelector("#phone").value = user.phone || "";
+  document.querySelector("#address").value = user.address || "";
+  renderOrderHistory();
+  profileModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+openAdminPanel.addEventListener("click", () => {
+  closeAllModals();
+  renderAdminPanel();
+  adminPanelModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("loggedInUser");
+  localStorage.removeItem("user");
+  updateUserActions();
+  closeAllModals();
+  showToast("Logged out successfully!");
+});
+
+[closeUserModal, closeLoginModal, closeSignupModal, closeChangePasswordModal, closeProfileModal, closeQuickViewModal, closeCartModal, closeWishlistModal, closeCompareModal, closeCheckoutModal, closeAdminPanelModal, closeOrderTrackingModal].forEach(btn => {
+  btn.addEventListener("click", closeAllModals);
+});
+
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = document.querySelector("#login-email").value;
+  const password = document.querySelector("#login-password").value;
+  const users = JSON.parse(localStorage.getItem("users")) || {};
+  if (users[email] && users[email].password === password) {
+    localStorage.setItem("loggedInUser", email);
+    updateUserActions();
+    closeAllModals();
+    showToast("Logged in successfully!");
+  } else {
+    showToast("Invalid email or password!", "error");
+  }
+});
+
+signupForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = document.querySelector("#signup-email").value;
+  const password = document.querySelector("#signup-password").value;
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+  if (users[email]) {
+    showToast("Email already registered!", "error");
+    return;
+  }
+  users[email] = { password, name: "", phone: "", address: "" };
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("loggedInUser", email);
+  updateUserActions();
+  closeAllModals();
+  showToast("Signed up successfully!");
+});
+
+changePasswordForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const currentPassword = document.querySelector("#current-password").value;
+  const newPassword = document.querySelector("#new-password").value;
+  const email = localStorage.getItem("loggedInUser");
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+  if (users[email].password === currentPassword) {
+    users[email].password = newPassword;
+    localStorage.setItem("users", JSON.stringify(users));
+    closeAllModals();
+    showToast("Password changed successfully!");
+  } else {
+    showToast("Current password is incorrect!", "error");
+  }
+});
+
+profileForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const user = {
+    name: document.querySelector("#name").value,
+    phone: document.querySelector("#phone").value,
+    address: document.querySelector("#address").value
+  };
+  localStorage.setItem("user", JSON.stringify(user));
+  closeAllModals();
+  showToast("Profile updated successfully!");
+});
+
+checkoutForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  if (!loggedInUser) {
+    showToast("Please log in to checkout!", "error");
+    closeAllModals();
+    loginModal.classList.add("active");
+    overlay.classList.add("active");
+    return;
+  }
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  if (cart.length === 0) {
+    showToast("Your cart is empty!", "error");
+    closeAllModals();
+    return;
+  }
+  const orderId = `ORD-${Date.now()}`;
+  const order = {
+    id: orderId,
+    user: loggedInUser,
+    items: cart,
+    total: cart.reduce((sum, item) => sum + products[item.id].price, 0),
+    status: "Order Placed",
+    timestamp: Date.now()
+  };
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push(order);
+  localStorage.setItem("orders", JSON.stringify(orders));
+  cart.forEach(item => {
+    if (products[item.id].stock > 0) {
+      products[item.id].stock -= 1;
+    } else {
+      showToast(`Product ${products[item.id].title} is out of stock!`, "error");
+    }
+  });
+  localStorage.setItem("cart", JSON.stringify([]));
+  updateBadges();
+  renderCart();
+  showToast(`Order placed successfully! Order ID: ${orderId}`);
+  closeAllModals();
+  simulateOrderTracking(orderId);
+});
+
+trackingForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const orderId = document.querySelector("#order-id").value;
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const order = orders.find(o => o.id === orderId);
+  const trackingStatus = document.querySelector("#tracking-status");
+  if (order) {
+    trackingStatus.innerHTML = `
+      <p><strong>Order ID:</strong> ${order.id}</p>
+      <p><strong>Status:</strong> ${order.status}</p>
+      <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
+      <p><strong>Date:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
+    `;
+  } else {
+    trackingStatus.innerHTML = "<p>Order not found!</p>";
+  }
+});
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const filter = btn.dataset.filter;
+    document.querySelectorAll(".product-item").forEach(item => {
+      const categories = item.dataset.categories.split(",");
+      item.style.display = filter === "all" || categories.includes(filter) ? "block" : "none";
+    });
+  });
+});
+
+document.querySelectorAll(".card-action-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const productId = btn.closest(".product-item").dataset.productId;
+    const action = btn.dataset.action;
+    if (action === "add-to-cart") {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (products[productId].stock > 0) {
+        cart.push({ id: productId });
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateBadges();
+        showToast("Added to cart!");
+      } else {
+        showToast("Product is out of stock!", "error");
+      }
+    } else if (action === "add-to-wishlist") {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      if (!wishlist.includes(productId)) {
+        wishlist.push(productId);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        updateBadges();
+        showToast("Added to wishlist!");
+      } else {
+        showToast("Already in wishlist!", "error");
+      }
+    } else if (action === "quick-view") {
+      const product = products[productId];
+      document.querySelector("#quick-view-image").src = product.image;
+      document.querySelector("#quick-view-title").textContent = product.title;
+      document.querySelector("#quick-view-category").textContent = product.category.join(", ");
+      document.querySelector("#quick-view-price").textContent = `$${product.price.toFixed(2)}`;
+      quickViewAddToCart.dataset.productId = productId;
+      closeAllModals();
+      quickViewModal.classList.add("active");
+      overlay.classList.add("active");
+    } else if (action === "add-to-compare") {
+      let compare = JSON.parse(localStorage.getItem("compare")) || [];
+      if (!compare.includes(productId)) {
+        if (compare.length < 4) {
+          compare.push(productId);
+          localStorage.setItem("compare", JSON.stringify(compare));
+          renderCompare();
+          showToast("Added to comparison!");
+        } else {
+          showToast("Cannot compare more than 4 products!", "error");
+        }
+      } else {
+        showToast("Already in comparison!", "error");
+      }
+    }
+  });
+});
+
+quickViewAddToCart.addEventListener("click", () => {
+  const productId = quickViewAddToCart.dataset.productId;
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  if (products[productId].stock > 0) {
+    cart.push({ id: productId });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateBadges();
+    showToast("Added to cart!");
+  } else {
+    showToast("Product is out of stock!", "error");
+  }
+});
+
+clearCompare.addEventListener("click", () => {
+  localStorage.setItem("compare", JSON.stringify([]));
+  renderCompare();
+  showToast("Comparison cleared!");
+});
+
+checkoutBtn.addEventListener("click", () => {
+  closeAllModals();
+  renderCheckoutCart();
+  checkoutModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
+document.querySelectorAll(".admin-tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".admin-tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".admin-tab-content").forEach(c => c.style.display = "none");
+    btn.classList.add("active");
+    document.querySelector(`#${btn.dataset.tab}-tab`).style.display = "block";
+    renderAdminPanel(btn.dataset.tab);
+  });
+});
+
+// Initialize
+updateBadges();
+updateUserActions();
+renderCart();
+renderWishlist();
+renderCompare();
+renderOrderHistory();
