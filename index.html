@@ -137,6 +137,7 @@
         <button class="btn btn-secondary" id="open-signup">Sign Up</button>
         <button class="btn btn-secondary" id="open-change-password" style="display: none;">Change Password</button>
         <button class="btn btn-secondary" id="open-profile" style="display: none;">Edit Profile</button>
+        <button class="btn btn-secondary" id="open-order-history" style="display: none;">Order History</button>
         <button class="btn btn-secondary" id="open-admin-panel" style="display: none;">Admin Panel</button>
         <button class="btn btn-secondary" id="logout" style="display: none;">Logout</button>
       </div>
@@ -236,6 +237,19 @@
   </div>
 
   <!-- 
+    - #ORDER HISTORY MODAL
+  -->
+  <div class="order-history-modal modal" id="order-history-modal">
+    <div class="order-history-modal-content modal-content">
+      <span class="close-modal" id="close-order-history-modal">×</span>
+      <h2 class="h3">Order History</h2>
+      <div class="order-history-content" id="order-history-content">
+        <p>No orders found.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
     - #QUICK VIEW MODAL
   -->
   <div class="quick-view-modal modal" id="quick-view-modal">
@@ -291,7 +305,7 @@
         </div>
         <div class="form-group">
           <label for="card-name">Name on Card</label>
-          <input type="text" id="card-name" name="card-name" placeholder="John Doe" required>
+          <input type="text" id="card-name" name "card-name" placeholder="John Doe" required>
         </div>
         <div class="form-group">
           <label for="card-expiry">Expiry Date</label>
@@ -420,7 +434,7 @@
             </li>
 
             <li>
-              <div class="collection-card" style="background-image: url('./assets/images/collection-3.jpg')">
+              <div class="collection-card" style="background-image: url('./assets/images/:collection-3.jpg')">
                 <h3 class="h4 card-title">Sports Collections</h3>
                 <a href="#" class="btn btn-secondary">
                   <span>Explore All</span>
@@ -1595,7 +1609,7 @@
 
             <li>
               <a href="#" class="footer-link">
-                <ion-icon name="chevron-forward-outline"></ion-icon>
+                <ion-icon name="chevron-forward-outline"></ Draymond-icon>
                 <span class="footer-link-text">View Cart</span>
               </a>
             </li>

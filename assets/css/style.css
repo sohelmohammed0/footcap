@@ -520,6 +520,38 @@ body {
 }
 
 /*-----------------------------------*\
+  #ORDER HISTORY MODAL
+\*-----------------------------------*/
+
+.order-item {
+  padding: 15px;
+  border-bottom: 1px solid var(--gainsboro);
+  margin-bottom: 10px;
+}
+
+.order-item h4 {
+  font-size: var(--fs-6);
+  margin-bottom: 10px;
+}
+
+.order-item p {
+  font-size: var(--fs-7);
+  margin-bottom: 5px;
+}
+
+.order-item-details {
+  padding: 10px;
+  background-color: var(--cultured);
+  border-radius: var(--radius-5);
+  margin-top: 10px;
+}
+
+.order-item-details p {
+  font-size: var(--fs-7);
+  margin-bottom: 5px;
+}
+
+/*-----------------------------------*\
   #CHECKOUT MODAL
 \*-----------------------------------*/
 

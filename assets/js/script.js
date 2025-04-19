@@ -15,6 +15,7 @@ const loginModal = document.querySelector("#login-modal");
 const signupModal = document.querySelector("#signup-modal");
 const changePasswordModal = document.querySelector("#change-password-modal");
 const profileModal = document.querySelector("#profile-modal");
+const orderHistoryModal = document.querySelector("#order-history-modal");
 const quickViewModal = document.querySelector("#quick-view-modal");
 const cartModal = document.querySelector("#cart-modal");
 const wishlistModal = document.querySelector("#wishlist-modal");
@@ -32,6 +33,7 @@ const openLogin = document.querySelector("#open-login");
 const openSignup = document.querySelector("#open-signup");
 const openChangePassword = document.querySelector("#open-change-password");
 const openProfile = document.querySelector("#open-profile");
+const openOrderHistory = document.querySelector("#open-order-history");
 const openAdminPanel = document.querySelector("#open-admin-panel");
 const logoutBtn = document.querySelector("#logout");
 const closeUserModal = document.querySelector("#close-user-modal");
@@ -39,6 +41,7 @@ const closeLoginModal = document.querySelector("#close-login-modal");
 const closeSignupModal = document.querySelector("#close-signup-modal");
 const closeChangePasswordModal = document.querySelector("#close-change-password-modal");
 const closeProfileModal = document.querySelector("#close-profile-modal");
+const closeOrderHistoryModal = document.querySelector("#close-order-history-modal");
 const closeQuickViewModal = document.querySelector("#close-quick-view-modal");
 const closeCartModal = document.querySelector("#close-cart-modal");
 const closeWishlistModal = document.querySelector("#close-wishlist-modal");
@@ -64,7 +67,7 @@ const checkoutBtn = document.querySelector("#checkout-btn");
 const clearCompare = document.querySelector("#clear-compare");
 
 function closeAllModals() {
-  [userModal, loginModal, signupModal, changePasswordModal, profileModal, quickViewModal, cartModal, wishlistModal, compareModal, checkoutModal, adminPanelModal, orderTrackingModal].forEach(modal => modal.classList.remove("active"));
+  [userModal, loginModal, signupModal, changePasswordModal, profileModal, orderHistoryModal, quickViewModal, cartModal, wishlistModal, compareModal, checkoutModal, adminPanelModal, orderTrackingModal].forEach(modal => modal.classList.remove("active"));
   overlay.classList.remove("active");
 }
 
@@ -97,6 +100,7 @@ function updateUserActions() {
     openSignup.style.display = "none";
     openChangePassword.style.display = "block";
     openProfile.style.display = "block";
+    openOrderHistory.style.display = "block";
     openAdminPanel.style.display = isAdmin ? "block" : "none";
     logoutBtn.style.display = "block";
   } else {
@@ -104,6 +108,7 @@ function updateUserActions() {
     openSignup.style.display = "block";
     openChangePassword.style.display = "none";
     openProfile.style.display = "none";
+    openOrderHistory.style.display = "none";
     openAdminPanel.style.display = "none";
     logoutBtn.style.display = "none";
   }
@@ -259,6 +264,48 @@ function renderCheckoutCart() {
       </div>
     `;
   }).join("") + `<p><strong>Total: $${cart.reduce((sum, item) => sum + products[item.id].price, 0).toFixed(2)}</strong></p>`;
+}
+
+function renderOrderHistory() {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  const orderHistoryContent = document.querySelector("#order-history-content");
+  const userOrders = orders.filter(order => order.user === loggedInUser);
+  
+  if (userOrders.length === 0) {
+    orderHistoryContent.innerHTML = "<p>No orders found.</p>";
+    return;
+  }
+
+  orderHistoryContent.innerHTML = userOrders.map(order => {
+    const items = order.items.reduce((acc, item) => {
+      acc[item.id] = (acc[item.id] || 0) + 1;
+      return acc;
+    }, {});
+    
+    const itemDetails = Object.entries(items).map(([productId, quantity]) => {
+      const product = products[productId];
+      return `
+        <div class="order-item-details">
+          <p><strong>Product Name:</strong> ${product.title}</p>
+          <p><strong>Product ID:</strong> ${productId}</p>
+          <p><strong>Quantity:</strong> ${quantity}</p>
+          <p><strong>Price per Unit:</strong> $${product.price.toFixed(2)}</p>
+          <p><strong>Total:</strong> $${(product.price * quantity).toFixed(2)}</p>
+        </div>
+      `;
+    }).join("");
+
+    return `
+      <div class="order-item">
+        <h4>Order ID: ${order.id}</h4>
+        <p><strong>Date:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
+        <p><strong>Status:</strong> ${order.status}</p>
+        <p><strong>Total Order Amount:</strong> $${order.total.toFixed(2)}</p>
+        ${itemDetails}
+      </div>
+    `;
+  }).join("");
 }
 
 function renderAdminPanel(tab = "inventory") {
@@ -419,6 +466,13 @@ openProfile.addEventListener("click", () => {
   overlay.classList.add("active");
 });
 
+openOrderHistory.addEventListener("click", () => {
+  closeAllModals();
+  renderOrderHistory();
+  orderHistoryModal.classList.add("active");
+  overlay.classList.add("active");
+});
+
 openAdminPanel.addEventListener("click", () => {
   closeAllModals();
   renderAdminPanel();
@@ -434,7 +488,7 @@ logoutBtn.addEventListener("click", () => {
   showToast("Logged out successfully!");
 });
 
-[closeUserModal, closeLoginModal, closeSignupModal, closeChangePasswordModal, closeProfileModal, closeQuickViewModal, closeCartModal, closeWishlistModal, closeCompareModal, closeCheckoutModal, closeAdminPanelModal, closeOrderTrackingModal].forEach(btn => {
+[closeUserModal, closeLoginModal, closeSignupModal, closeChangePasswordModal, closeProfileModal, closeOrderHistoryModal, closeQuickViewModal, closeCartModal, closeWishlistModal, closeCompareModal, closeCheckoutModal, closeAdminPanelModal, closeOrderTrackingModal].forEach(btn => {
   btn.addEventListener("click", closeAllModals);
 });
 
